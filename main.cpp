@@ -1,129 +1,38 @@
 #include <iostream>
-#include <conio.h>
-#include <windows.h>
+#include "Image.h"
+#include <vector>
 
 using namespace std;
 
-struct FVector2D
-{
-	int X;
-	int Y;
-};
-
-char Map[10][10] = {
-	{'#','#','#','#','#','#','#','#','#','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ','#',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ','#',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
-	{'#',' ',' ',' ',' ',' ',' ',' ','G','#'},
-	{'#','#','#','#','#','#','#','#','#','#'}
-};
-
-
-bool IsCollide(const FVector2D& PredictPlayerPosition, FVector2D& OutPlayerPosition)
-{
-	if (Map[PredictPlayerPosition.Y][PredictPlayerPosition.X] == '#')
-	{
-		return false;
-	}
-	else
-	{
-		OutPlayerPosition = PredictPlayerPosition;
-		return true;
-	}
-}
-
-void SetLocation(FVector2D NewLocation);
-
-void DrawBG(FVector2D StartPosition)
-{
-	for (int Y = 0; Y < 10; ++Y)
-	{
-		for (int X = 0; X < 10; ++X)
-		{
-			FVector2D Temp;
-			Temp.X = X + StartPosition.X;
-			Temp.Y = Y + StartPosition.Y;
-			SetLocation(Temp);
-			cout << Map[Y][X];
-		}
-	}
-
-}
 
 int main()
 {
-	bool bRunning = true;
-	FVector2D PlayerPosition;
-	PlayerPosition.X = 1;
-	PlayerPosition.Y = 1;
+	std::vector<Image> ImageList;
 
-	srand(static_cast<unsigned int>(time(nullptr)));
-	FVector2D StartPosition = { 0, 0 };
-	//StartPosition.X = rand() % 10 + 1;
-	//StartPosition.Y = rand() % 10 + 1;
+	Image Temp(0, 0, 165, 55, 128);/*
+	Temp.X = 0;
+	Temp.Y = 0;
+	Temp.R = 165;
+	Temp.G = 55;
+	Temp.B = 128;*/
+	ImageList.push_back(Temp);
 
-	while (bRunning)
+
+	Image Temp2(0, 1, 13, 82, 182);
+	/*Temp.X = 0;
+	Temp.Y = 1;
+	Temp.R = 133;
+	Temp.G = 82;
+	Temp.B = 182;*/
+	ImageList.push_back(Temp);
+
+	cout << ImageList.size() << endl;
+
+	for (int i = 0; i < ImageList.size(); ++i)
 	{
-		int KeyCode = _getch();
-
-		FVector2D PredictPlayerPosition = PlayerPosition;
-
-		switch (KeyCode)
-		{
-		case 'w':
-		case 'W':
-			PredictPlayerPosition.Y--;
-			break;
-		case 's':
-		case 'S':
-			PredictPlayerPosition.Y++;
-			break;
-		case 'a':
-		case 'A':
-			PredictPlayerPosition.X--;
-			break;
-		case 'd':
-		case 'D':
-			PredictPlayerPosition.X++;
-			break;
-		case 27:
-			bRunning = false;
-			break;
-
-		}
-
-		IsCollide(PredictPlayerPosition, PlayerPosition);
-
-
-		//PlayerPosition.X = PlayerPosition.X < 1 ? 1 : PlayerPosition.X;
-		//PlayerPosition.Y = PlayerPosition.Y < 1 ? 1 : PlayerPosition.Y;
-		//PlayerPosition.X = PlayerPosition.X >= 9 ? 8 : PlayerPosition.X;
-		//PlayerPosition.Y = PlayerPosition.Y >= 9 ? 8 : PlayerPosition.Y;
-
-		system("cls");
-
-		DrawBG(StartPosition);
-		FVector2D Temp;
-		Temp.X = PlayerPosition.X + StartPosition.X;
-		Temp.Y = PlayerPosition.Y + StartPosition.Y;
-		SetLocation(Temp);
-		cout << "P";
+		cout << ImageList[i].X << ",";
+		cout << ImageList[i].Y << endl;
 	}
 
-
 	return 0;
-}
-
-
-void SetLocation(FVector2D NewLocation)
-{
-	COORD Cur;
-	Cur.X = NewLocation.X;
-	Cur.Y = NewLocation.Y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Cur);
 }
